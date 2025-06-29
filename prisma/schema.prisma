@@ -28,14 +28,108 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Cart      Cart[]
 }
 
 // модель для категорий
+model Category {
+  id Int @id @default(autoincrement())
+
+  name String @unique
+
+  products Product[] // связь с продуктами, один ко многим
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// модель для продуктов
 model Product {
-  id       Int     @id @default(autoincrement())
+  id Int @id @default(autoincrement())
+
+  name        String
+  imageUrl    String
+  price       Float
+  description String? // опциональное свойство, может быть null
+
+  // должны взять [categoryId] и обратиться к его [id](для javascript)  // связь продуктов с категориями
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId Int // должны хранить id категории в объекте продукта для (db)
+
+  ingredients Ingredient[] // связь с ингредиентами, многие ко многим
+  items       ProductItem[] // связь с вариациями, один ко многим
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// многие ко многим связь с продуктами // модель для ингредиентов
+model Ingredient {
+  id Int @id @default(autoincrement())
+
   name     String
   imageUrl String
-  active   Boolean @default(false)
+  price    Float
+
+  products Product[] // связь с продуктами, один ко многим
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  CartItem   CartItem? @relation(fields: [cartItemId], references: [id])
+  cartItemId Int?
+}
+
+// многие ко многим вариации 
+model ProductItem {
+  id Int @id @default(autoincrement())
+
+  imageUrl  String
+  size      Int? // размер пиццы, опциональное свойство
+  pizzaType String? // тип пиццы (тонкое, толстое тесто и т.д.) опциональное свойство
+
+  // должны взять [categoryId] и обратиться к его [id](для javascript)  // связь продуктов с категориями
+  product   Product @relation(fields: [productId], references: [id]) //у вариаций может быть один продукт
+  productId Int // должны хранить id продукта в объекте вариации для (db)
+
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  CartItem  CartItem[]
+}
+
+// разработка корзины
+model Cart {
+  id Int @id @default(autoincrement())
+
+  // если можем привязать корзину без автор значит опционально свойство
+  user   User? @relation(fields: [userId], references: [id]) // связь у одного польз одна корзина
+  userId Int? // id пользователя, которому принадлежит корзина
+
+  items CartItem[]
+
+  totalAmount Float @default(0) // общая сумма корзины знач 0 по умолчанию
+
+  token String? // токен для корзины, опциональное свойство// когда пользователь без авторизации
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CartItem {
+  id Int @id @default(autoincrement())
+
+  cart   Cart @relation(fields: [cartId], references: [id])
+  cartId Int
+
+  produktItem   ProductItem @relation(fields: [productItemId], references: [id])
+  productItemId Int
+
+  quantity Int
+
+  ingrediets Ingredient[]
+
+  // будем брать из productItem
+  // pizzaSize Int?
+  // pizzaType Int?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
