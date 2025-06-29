@@ -1,11 +1,11 @@
-// обязательная деректива что бы работало на стороне клиента
+// обязательная детектива что бы работало на стороне клиента
 'use client';
 
-import React from 'react';
-import { FilterCheckbox, FilterChecboxProps } from './filter-checkbox';
-import { Input } from '../ui/input';
+import React from 'react'
+import { Input } from '../ui/input'
+import { FilterCheckbox, FilterCheckboxProps } from './filter-checkbox'
 
-type Item = FilterChecboxProps;
+type Item = FilterCheckboxProps;
 
 interface Props {
   title: string;
@@ -39,8 +39,8 @@ export const CheckboxFiltersGroup: React.FC<Props> = ({
   };
 
 
-   // обработчик изменения чекбоксов
-  // при изменении чекбоксов вызываем onChange, если он передан
+   // обработчик изменения чекбокса
+  // при изменении чекбокса вызываем onChange, если он передан
   const list = showAll ? items.filter((item) => item.text.toLowerCase().includes(searchValue.toLowerCase())) 
   : defaultItems.slice(0, limit);
 
