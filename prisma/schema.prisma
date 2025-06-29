@@ -1,0 +1,42 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// указываем что работаем с клиентом призма и джава скриптом
+generator client {
+  provider = "prisma-client-js"
+}
+
+// указываем что работаем с базой данных postgresql
+datasource db {
+  // провайдер базы данных
+  provider = "postgresql"
+  // куда подключаемся
+  url      = env("DATABASE_URL")
+}
+
+// создание таблиц в базе данных
+model User {
+  // обязательно тип указывать через пробел, можно через таб или любое кол-пробелов
+  // id - уникальный идентификатор пользователя
+  // @id - указывает что это первичный ключ
+  // @default(autoincrement()) - указывает что значение пользователь будет соз автомат и прибавлять +1
+  //  @unique - указывает что значение будет уникальным
+  id       Int    @id @default(autoincrement())
+  fullName String
+  email    String @unique
+  password String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// модель для категорий
+model Product {
+  id       Int     @id @default(autoincrement())
+  name     String
+  imageUrl String
+  active   Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
