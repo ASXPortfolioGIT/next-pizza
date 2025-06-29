@@ -8,7 +8,7 @@ interface Props {
   className?: string;
 }
 // список категорий для отображения
-const cats = [
+export const cats = [
   { id: 1, name: 'Пиццы' },
   { id: 2, name: 'Комбо' },
   { id: 3, name: 'Закуски' },
@@ -21,6 +21,7 @@ const cats = [
 
 export const Categories: React.FC<Props> = ({ className }) => {
   const categoryActiveId = useCategoryStore((state) => state.activeId);
+  console.log('categoryActiveId in Categories:', categoryActiveId);
 
   return (
     // оборачиваем в div, чтобы можно было применить стили, настройка иконок и т д

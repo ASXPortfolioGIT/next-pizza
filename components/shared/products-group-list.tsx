@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils'
 import { useCategoryStore } from '@/store/category'
 import React from 'react'
 import { useIntersection } from 'react-use'
+import { cats } from './categories'
 import { ProductCard } from './product-card'
 import { Title } from './title'
 
@@ -22,20 +23,24 @@ export const ProductsGroupList: React.FC<Props> = ({
   listClassName,
   categoryId
 }) => {
-
   // отвечает за переключение или получение заголовка типа завтрак или пиццы при прокрутке страницы
   const setActiveCategoryId = useCategoryStore((state) => state.setActiveId);
+  const activeId = useCategoryStore((state) => state.activeId);
   const intersectionRef = React.useRef<HTMLDivElement | null>(null);
   const intersection = useIntersection(intersectionRef as React.RefObject<HTMLElement>, {
-  threshold: 0.4,
+  threshold: 0.2,
   });
 
   React.useEffect(() => {
     if (intersection?.isIntersecting) {
-      // Здесь можно выполнить действия, когда элемент становится видимым
       setActiveCategoryId(categoryId);
+    } else if (intersection && !intersection.isIntersecting) {
+      const idx = cats.findIndex((cat: { id: number; name: string }) => cat.id === categoryId);
+      if (idx > 0) {
+        setActiveCategoryId(cats[idx - 1].id);
+      }
     }
-  },[categoryId, intersection?.isIntersecting, title]);
+  }, [categoryId, intersection?.isIntersecting, title]);
 
   return (
     <div className={className} id={title} ref={intersectionRef}>
