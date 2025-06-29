@@ -35,7 +35,7 @@ export const Categories: React.FC<Props> = ({ className }) => {
           )}
           href={`/#${name}`}
           key={index}>
-          <button>{name}</button>
+          <button onClick={() => useCategoryStore.getState().setActiveId(id)}>{name}</button>
         </a>
       ))}
     </div>

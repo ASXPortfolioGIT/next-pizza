@@ -33,7 +33,7 @@ export const ProductsGroupList: React.FC<Props> = ({
   React.useEffect(() => {
     if (intersection?.isIntersecting) {
       // Здесь можно выполнить действия, когда элемент становится видимым
-      console.log(title, categoryId);
+      setActiveCategoryId(categoryId);
     }
   },[categoryId, intersection?.isIntersecting, title]);
 
