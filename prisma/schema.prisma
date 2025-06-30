@@ -21,14 +21,23 @@ model User {
   // @id - указывает что это первичный ключ
   // @default(autoincrement()) - указывает что значение пользователь будет соз автомат и прибавлять +1
   //  @unique - указывает что значение будет уникальным
-  id       Int    @id @default(autoincrement())
+  id       Int      @id @default(autoincrement())
   fullName String
-  email    String @unique
+  email    String   @unique
   password String
+  role     UserRole @default(USER) // роль пользователя, по умолчанию USER
+
+  provider   String? // провайдер для авторизации (например, Google, Facebook), опциональное свойство
+  providerId String? // идентификатор пользователя в провайдере, опциональное
+
+  cart  Cart?
+  order Order[]
+
+  verificationCode VerificationCode?
+  verified         DateTime // дата верификации пользователя, опциональное свойство
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  Cart      Cart[]
 }
 
 // модель для категорий
@@ -68,24 +77,25 @@ model Ingredient {
   id Int @id @default(autoincrement())
 
   name     String
-  imageUrl String
   price    Float
+  imageUrl String
 
   products Product[] // связь с продуктами, один ко многим
 
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  CartItem   CartItem? @relation(fields: [cartItemId], references: [id])
-  cartItemId Int?
+  cartItem CartItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 // многие ко многим вариации 
 model ProductItem {
   id Int @id @default(autoincrement())
 
-  imageUrl  String
+  imageUrl  String?
   size      Int? // размер пиццы, опциональное свойство
-  pizzaType String? // тип пиццы (тонкое, толстое тесто и т.д.) опциональное свойство
+  pizzaType Int? // тип пиццы (тонкое, толстое тесто и т.д.) опциональное свойство
+  price     Int
 
   // должны взять [categoryId] и обратиться к его [id](для javascript)  // связь продуктов с категориями
   product   Product @relation(fields: [productId], references: [id]) //у вариаций может быть один продукт
@@ -93,7 +103,7 @@ model ProductItem {
 
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
-  CartItem  CartItem[]
+  cartItems CartItem[]
 }
 
 // разработка корзины
@@ -102,7 +112,7 @@ model Cart {
 
   // если можем привязать корзину без автор значит опционально свойство
   user   User? @relation(fields: [userId], references: [id]) // связь у одного польз одна корзина
-  userId Int? // id пользователя, которому принадлежит корзина
+  userId Int?  @unique // если пользователь авторизован, то корзина будет привязана к пользователю
 
   items CartItem[]
 
@@ -120,12 +130,12 @@ model CartItem {
   cart   Cart @relation(fields: [cartId], references: [id])
   cartId Int
 
-  produktItem   ProductItem @relation(fields: [productItemId], references: [id])
+  productItem   ProductItem @relation(fields: [productItemId], references: [id])
   productItemId Int
 
   quantity Int
 
-  ingrediets Ingredient[]
+  ingredients Ingredient[]
 
   // будем брать из productItem
   // pizzaSize Int?
@@ -133,4 +143,51 @@ model CartItem {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id Int @id @default(autoincrement())
+
+  user   User? @relation(fields: [userId], references: [id])
+  userId Int?
+
+  token String // токен для заказа, опциональное свойство
+
+  totalAmount Float // общая сумма заказа знач 0 по умолчанию
+  status      OrderStatus
+  paymentId   String? // идентификатор платежа, опциональное свойство
+
+  items Json
+
+  fullName String // имя пользователя, который сделал заказ
+  email    String // email пользователя, который сделал заказ
+  phone    String // телефон пользователя, который сделал заказ
+  address  String // адрес доставки
+  comment  String? // комментарий к заказу, опциональное свойство
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model VerificationCode {
+  id     Int  @id @default(autoincrement())
+  user   User @relation(fields: [userId], references: [id])
+  userId Int  @unique
+
+  code String // код подтверждения
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, code]) // уникальность кода для пользователя
+}
+
+enum OrderStatus {
+  PENDING // заказ в ожидании
+  SUCCEEDED // заказ успешно выполнен
+  CANCELLED // заказ отменен
+}
+
+enum UserRole {
+  USER
+  ADMIN
 }

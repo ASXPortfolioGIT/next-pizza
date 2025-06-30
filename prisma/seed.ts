@@ -1,233 +1,185 @@
-import { PrismaClient } from '@prisma/client';
+import { Prisma } from '@prisma/client'
+import { hashSync } from 'bcrypt'
+import { categories, ingredients, products } from './constants'
+import { prisma } from './prisma-client'
 
-const prisma = new PrismaClient();
-
-const randomNumber = (min: number, max: number) => {
-  return Math.floor(Math.random() * (max - min) + min);
+const randomNumber = (min: number, max: number): number => {
+  return Math.floor(Math.random() * (max * 10 - min * 10 + 1) + min * 10) / 10;
 };
 
-const generatePizza = (productId: number, type: number, size: number) => {
+const generateProductItem = ({ 
+  productId, 
+  pizzaType,
+  size,
+}: {
+    productId: number;
+    pizzaType?: 1 | 2; // тип пиццы (тонкое, толстое тесто и т.д.)
+    size?: 20 | 30 | 40; // размеры пиццы
+}) => {
   return {
     productId,
+    pizzaType,
     size,
-    type,
-    price: randomNumber(190, 600),
-    carbs: randomNumber(10, 30),
-    fats: randomNumber(5, 15),
-    kcal: randomNumber(180, 300),
-    proteins: randomNumber(20, 45),
-    weight: randomNumber(400, 650),
-  };
+    price: randomNumber(500, 1500), // случайная цена от 500
+    imageUrl: '/Users/asx_pro_m1/Desktop/scripts/next-pizza/public/pizza_img/1.jpg',
+  } as Prisma.ProductItemUncheckedCreateInput;
 };
 
+
+// генерируем случайные данные для заполнения базы данных
 async function up() {
   await prisma.user.createMany({
     data: [
       {
-        fullName: 'User',
-        phone: '79992222222',
-        phoneVerified: new Date(),
+        fullName: 'User Test',
+        email: 'user@test.ru',
+        password: hashSync('12345678', 10),
+        verified: new Date(),
         role: 'USER',
       },
       {
-        fullName: 'Admin',
-        phone: '79991111111',
-        phoneVerified: new Date(),
+        fullName: 'Admin Admin',
+        email: 'admin@test.ru',
+        password: hashSync('12345678', 10),
+        verified: new Date(),
         role: 'ADMIN',
       },
     ],
   });
-
-  await prisma.product.createMany({
-    data: [
-      {
-        name: 'Пепперони фреш',
-        imageUrl:
-          'https://media.dodostatic.net/image/r:233x233/11EE7D61304FAF5A98A6958F2BB2D260.webp',
-        active: true,
-      },
-      {
-        name: 'Сырная',
-        imageUrl:
-          'https://media.dodostatic.net/image/r:233x233/11EE7D610CF7E265B7C72BE5AE757CA7.webp',
-        active: true,
-      },
-      {
-        name: 'Чоризо фреш',
-        imageUrl:
-          'https://media.dodostatic.net/image/r:584x584/11EE7D61706D472F9A5D71EB94149304.webp',
-        active: true,
-      },
-    ],
-  });
-
-  await prisma.pizza.createMany({
-    data: [
-      generatePizza(1, 1, 20),
-      generatePizza(1, 2, 30),
-      generatePizza(1, 3, 40),
-
-      generatePizza(2, 1, 20),
-      generatePizza(2, 2, 30),
-      generatePizza(2, 3, 40),
-
-      generatePizza(3, 1, 20),
-      generatePizza(3, 2, 30),
-      generatePizza(3, 3, 40),
-    ],
-  });
+  await prisma.category.createMany({
+  data: categories
+});
 
   await prisma.ingredient.createMany({
-    data: [
-      {
-        name: 'Сырный бортик',
-        price: 179,
-        imageUrl:
-          'https://cdn.dodostatic.net/static/Img/Ingredients/99f5cb91225b4875bd06a26d2e842106.png',
+    data: ingredients
+  });
+
+  await prisma.product.createMany({
+    data: products
+  });
+  // добавляем пиццу с ингредиентами
+  const pizza1 = await prisma.product.create({
+    data: {
+      name: 'Пепперони',
+      price: 700,
+      imageUrl: 'https://cdn.dodostatic.net/static/Img/Products/000D3A22FA54A81411E9AFA6B0F2C1B4',
+      categoryId: 1,
+      ingredients: {
+        connect: ingredients.slice(0, 5),
       },
-      {
-        name: 'Сливочная моцарелла',
-        price: 79,
-        imageUrl:
-          'https://cdn.dodostatic.net/static/Img/Ingredients/cdea869ef287426386ed634e6099a5ba.png',
+    },
+  });
+
+  const pizza2 = await prisma.product.create({
+    data: {
+      name: 'Маргарита',
+      price: 600,
+      imageUrl: 'https://cdn.dodostatic.net/static/Img/Products/000D3A22FA54A81411E9AFA6B0F2C1B4',
+      categoryId: 1,
+      ingredients: {
+        connect: ingredients.slice(5, 10),
       },
-      {
-        name: 'Сыры чеддер и пармезан',
-        price: 79,
-        imageUrl:
-          'https://cdn.dodostatic.net/static/Img/Ingredients/000D3A22FA54A81411E9AFA69C1FE796',
+    },
+  });
+
+  const pizza3 = await prisma.product.create({
+    data: {
+      name: 'Гавайская',
+      price: 800,
+      imageUrl: 'https://cdn.dodostatic.net/static/Img/Products/000D3A22FA54A81411E9AFA6B0F2C1B4',
+      categoryId: 1,
+      ingredients: {
+        connect: ingredients.slice(10, 15),
       },
-      {
-        name: 'Острый перец халапеньо',
-        price: 59,
-        imageUrl:
-          'https://cdn.dodostatic.net/static/Img/Ingredients/11ee95b6bfdf98fb88a113db92d7b3df.png',
-      },
-      {
-        name: 'Нежный цыпленок',
-        price: 79,
-        imageUrl:
-          'https://cdn.dodostatic.net/static/Img/Ingredients/000D3A39D824A82E11E9AFA5B328D35A',
-      },
-      {
-        name: 'Шампиньоны',
-        price: 59,
-        imageUrl:
-          'https://cdn.dodostatic.net/static/Img/Ingredients/000D3A22FA54A81411E9AFA67259A324',
-      },
-      {
-        name: 'Бекон',
-        price: 79,
-        imageUrl:
-          'https://cdn.dodostatic.net/static/Img/Ingredients/000D3A39D824A82E11E9AFA637AAB68F',
-      },
-      {
-        name: 'Ветчина',
-        price: 79,
-        imageUrl:
-          'https://cdn.dodostatic.net/static/Img/Ingredients/000D3A39D824A82E11E9AFA61B9A8D61',
-      },
-      {
-        name: 'Пикантная пепперони',
-        price: 79,
-        imageUrl:
-          'https://cdn.dodostatic.net/static/Img/Ingredients/000D3A22FA54A81411E9AFA6258199C3',
-      },
-      {
-        name: 'Острая чоризо',
-        price: 79,
-        imageUrl:
-          'https://cdn.dodostatic.net/static/Img/Ingredients/000D3A22FA54A81411E9AFA62D5D6027',
-      },
-      {
-        name: 'Маринованные огурчики',
-        price: 59,
-        imageUrl:
-          'https://cdn.dodostatic.net/static/Img/Ingredients/000D3A21DA51A81211E9EA89958D782B',
-      },
-      {
-        name: 'Свежие томаты',
-        price: 59,
-        imageUrl:
-          'https://cdn.dodostatic.net/static/Img/Ingredients/000D3A39D824A82E11E9AFA7AC1A1D67',
-      },
-      {
-        name: 'Красный лук',
-        price: 59,
-        imageUrl:
-          'https://cdn.dodostatic.net/static/Img/Ingredients/000D3A22FA54A81411E9AFA60AE6464C',
-      },
-      {
-        name: 'Сочные ананасы',
-        price: 59,
-        imageUrl:
-          'https://cdn.dodostatic.net/static/Img/Ingredients/000D3A21DA51A81211E9AFA6795BA2A0',
-      },
-      {
-        name: 'Итальянские травы',
-        price: 39,
-        imageUrl:
-          'https://cdn.dodostatic.net/static/Img/Ingredients/370dac9ed21e4bffaf9bc2618d258734.png',
-      },
-      {
-        name: 'Сладкий перец',
-        price: 59,
-        imageUrl:
-          'https://cdn.dodostatic.net/static/Img/Ingredients/000D3A22FA54A81411E9AFA63F774C1B',
-      },
-      {
-        name: 'Кубики брынзы',
-        price: 79,
-        imageUrl:
-          'https://cdn.dodostatic.net/static/Img/Ingredients/000D3A39D824A82E11E9AFA6B0FFC349',
-      },
-      {
-        name: 'Митболы',
-        price: 79,
-        imageUrl:
-          'https://cdn.dodostatic.net/static/Img/Ingredients/b2f3a5d5afe44516a93cfc0d2ee60088.png',
-      },
+    },
+  });
+
+  await prisma.productItem.createMany({
+     data: [
+  // Пицца "Пепперони фреш"
+  generateProductItem({ productId: pizza1.id, pizzaType: 1, size: 20 }),
+  generateProductItem({ productId: pizza1.id, pizzaType: 2, size: 30 }),
+  generateProductItem({ productId: pizza1.id, pizzaType: 2, size: 40 }),
+
+  // Пицца "Сырная"
+  generateProductItem({ productId: pizza2.id, pizzaType: 1, size: 20 }),
+  generateProductItem({ productId: pizza2.id, pizzaType: 1, size: 30 }),
+  generateProductItem({ productId: pizza2.id, pizzaType: 1, size: 40 }),
+  generateProductItem({ productId: pizza2.id, pizzaType: 2, size: 20 }),
+  generateProductItem({ productId: pizza2.id, pizzaType: 2, size: 30 }),
+  generateProductItem({ productId: pizza2.id, pizzaType: 2, size: 40 }),
+
+  // Пицца "Чоризо фреш"
+  generateProductItem({ productId: pizza3.id, pizzaType: 1, size: 20 }),
+  generateProductItem({ productId: pizza3.id, pizzaType: 2, size: 30 }),
+  generateProductItem({ productId: pizza3.id, pizzaType: 2, size: 40 }),
+  
+
+  generateProductItem({ productId: 1 }),
+  generateProductItem({ productId: 2 }),
+  generateProductItem({ productId: 3 }),
+  generateProductItem({ productId: 4 }),
+  generateProductItem({ productId: 5 }),
+  generateProductItem({ productId: 6 }),
+  generateProductItem({ productId: 7 }),
+  generateProductItem({ productId: 8 }),
+  generateProductItem({ productId: 9 }),
+  generateProductItem({ productId: 10 }),
+  generateProductItem({ productId: 11 }),
+  generateProductItem({ productId: 12 }),
+  generateProductItem({ productId: 13 }),
     ],
   });
 
   await prisma.cart.createMany({
-    data: [
+    data:[
       {
         userId: 1,
         totalAmount: 0,
+        token: '12345678',
       },
       {
         userId: 2,
         totalAmount: 0,
+        token: '15555678',
       },
     ],
   });
 
   await prisma.cartItem.create({
-    data: {
-      pizzaId: 1,
-      cartId: 1,
-      userId: 1,
-      quantity: 1,
-      ingredients: {
-        connect: [{ id: 1 }, { id: 2 }, { id: 3 }],
+    data:{
+        cartId: 1,
+        productItemId: 1,
+        quantity: 2,
+        ingredients: {
+          connect: [
+            { id: 1 }, // Сыр
+            { id: 2 }, // Помидоры
+            { id: 3 }, // Колбаса
+            { id: 4 }, // Грибы
+            { id: 5 }, // Лук
+          ]
+        },
       },
-    },
   });
 }
 
+
+
+// очищаем базу данных
 async function down() {
   await prisma.$executeRaw`TRUNCATE TABLE "User" RESTART IDENTITY CASCADE;`;
+  await prisma.$executeRaw`TRUNCATE TABLE "Category" RESTART IDENTITY CASCADE;`;
   await prisma.$executeRaw`TRUNCATE TABLE "Product" RESTART IDENTITY CASCADE;`;
-  await prisma.$executeRaw`TRUNCATE TABLE "Order" RESTART IDENTITY CASCADE;`;
-  await prisma.$executeRaw`TRUNCATE TABLE "Pizza" RESTART IDENTITY CASCADE;`;
-  await prisma.$executeRaw`TRUNCATE TABLE "VerificationCode" RESTART IDENTITY CASCADE;`;
+  await prisma.$executeRaw`TRUNCATE TABLE "ProductItem" RESTART IDENTITY CASCADE;`;
+  await prisma.$executeRaw`TRUNCATE TABLE "Ingredient" RESTART IDENTITY CASCADE;`;
   await prisma.$executeRaw`TRUNCATE TABLE "Cart" RESTART IDENTITY CASCADE;`;
   await prisma.$executeRaw`TRUNCATE TABLE "CartItem" RESTART IDENTITY CASCADE;`;
 }
 
+
 async function main() {
-  try {
+    try {
     await down();
     await up();
   } catch (e) {
