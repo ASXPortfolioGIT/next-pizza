@@ -115,7 +115,7 @@ export const products = [
 	},
 		{
 		name: 'Кофе латте',
-		imageUrl: '/Users/asx_pro_m1/Desktop/scripts/next-pizza/public/coffi_latte.jpg',
+		imageUrl: 'https://media.dodostatic.net/image/r:584x584/11ee7d61b0c26a3f85d97a78feee00ad.avif',
 		categoryId: 3,
 		price: 149,
 	},
@@ -128,14 +128,14 @@ export const products = [
 
 	// Напитки (categoryId: 2)
 	{
-		name: 'Pepsi 0.5л',
-		imageUrl: 'https://media.dodostatic.net/image/r:233x233/11EE7D61C1A5B7A2B9F9F2F6C4D1F4FA.webp',
+		name: 'Добрый кола 0.5л',
+		imageUrl: 'https://media.dodostatic.net/image/r:584x584/0194b770052874e5866fb322a5ccd52e.avif',
 		categoryId: 2,
 		price: 149,
 	},
 	{
-		name: 'Mirinda 0.5л',
-		imageUrl: 'https://media.dodostatic.net/image/r:233x233/11EE7D61C1A5B7A2B9F9F2F6C4D1F4FB.webp',
+		name: 'Добрый апельсин 0.5л',
+		imageUrl: 'https://media.dodostatic.net/image/r:584x584/0194b76f2778790e920584c191edd032.avif',
 		categoryId: 2,
 		price: 149,
 	},
