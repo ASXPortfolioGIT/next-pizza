@@ -19,10 +19,13 @@ export const Filters: React.FC<Props> = ({ className }) => {
   return (
     <div className={className}>
       <Title text="Фильтрация" size="sm" className="mb-5 font-bold" />
+
       {/* верхние чекбоксы */}
       <div className="flex flex-col gap-4"> 
-        <FilterCheckbox text="Можно собирать" value="1" />
-        <FilterCheckbox text="Новинки" value="2" />
+
+        <FilterCheckbox name='qwe' text="Можно собирать" value="1" />
+        <FilterCheckbox name='asd' text="Новинки" value="2" />
+
       </div>
 
       {/* фильтр цены */}
@@ -55,6 +58,7 @@ export const Filters: React.FC<Props> = ({ className }) => {
 
       <CheckboxFiltersGroup 
       title="Ингредиенты" 
+      name='ingredients'
       className="mt-5"
       limit={6}
       defaultItems={items.slice(0, 6)}
