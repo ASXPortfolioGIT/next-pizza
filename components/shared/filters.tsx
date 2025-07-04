@@ -17,8 +17,7 @@ interface PriceProps {
 };	
 
 export const Filters: React.FC<Props> = ({ className }) => {
-  const { ingredients, loading, onAddId, selectedIds } = useFilterIngredients();
-
+  const { ingredients, loading, onAddId, selectedIngredients } = useFilterIngredients();
   const [sizes, { toggle: toggleSizes }] = useSet(new Set<string>([]));
   const [pizzaTypes, { toggle: togglePizzaTypes }] = useSet(new Set<string>([]));
 
@@ -34,11 +33,17 @@ export const Filters: React.FC<Props> = ({ className }) => {
   });
 };
 
+React.useEffect(() => {
+  console.log({prices, pizzaTypes, sizes, ingredients, selectedIngredients})
+}, [prices, pizzaTypes, sizes, ingredients, selectedIngredients])
+
   return (
     <div className={className}>
       <Title text="Фильтрация" size="sm" className="mb-5 font-bold" />
 
       {/* верхние чекбоксы */}
+
+      {/* фильтр теста */}
       <CheckboxFiltersGroup
         title="Тип теста"
         name="pizzaTypes"
@@ -51,7 +56,7 @@ export const Filters: React.FC<Props> = ({ className }) => {
         ]}
       />
 
-
+      {/* фильтр размеров пиццы */}
       <CheckboxFiltersGroup
         title="Размеры"
         name="sizes"
@@ -106,7 +111,7 @@ export const Filters: React.FC<Props> = ({ className }) => {
       items={items}
       loading={loading}
       onClickCheckbox={onAddId}
-      selected={selectedIds}
+      selected={selectedIngredients}
       />
     </div>
   );
