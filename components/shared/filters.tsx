@@ -18,14 +18,26 @@ interface PriceProps {
   priceTo?: number;
 };	
 
+interface QueryFilters extends PriceProps {
+  pizzaTypes: string;
+  sizes: string;
+  ingredients: string;
+
+};
+
+
 export const Filters: React.FC<Props> = ({ className }) => {
-  const searchParams = useSearchParams();
+  const searchParams = useSearchParams() as unknown as Map<keyof QueryFilters, string>;
   const router = useRouter();
   const { ingredients, loading, onAddId, selectedIngredients } = useFilterIngredients();
   const [sizes, { toggle: toggleSizes }] = useSet(new Set<string>([]));
   const [pizzaTypes, { toggle: togglePizzaTypes }] = useSet(new Set<string>([]));
 
-  const [prices, setPrice] = React.useState<PriceProps>({});
+  const [prices, setPrice] = React.useState<PriceProps>({
+
+    priceFrom: Number(searchParams.get('priceFrom')) || undefined,
+    priceTo: Number(searchParams.get('priceTo')) || undefined,
+  });
 
   const items = ingredients.map((item) => ({ value: String(item.id), text: item.name }));
 
@@ -36,8 +48,6 @@ export const Filters: React.FC<Props> = ({ className }) => {
     [name]: value,
   });
 };
-
-console.log(searchParams, 999);
 
 React.useEffect(() => {
   const fiters = {
@@ -93,7 +103,7 @@ React.useEffect(() => {
           
           <Input 
           type="number" 
-          value={String(prices.priceFrom)} 
+          value={prices.priceFrom !== undefined ? prices.priceFrom : ""} 
           placeholder="0" 
           min={0} 
           max={1000} 
@@ -104,7 +114,7 @@ React.useEffect(() => {
           type="number" 
           min={100} 
           max={1000} 
-          value={String(prices.priceTo)}
+          value={prices.priceTo !== undefined ? prices.priceTo : ""}
           onChange={(e) => updatePrice('priceTo', Number(e.target.value))}
           placeholder="1000" 
           />
