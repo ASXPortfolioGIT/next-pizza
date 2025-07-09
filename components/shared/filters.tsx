@@ -1,6 +1,6 @@
 'use client'
 import { useFilterIngredients } from '@/hooks/useFilterIngredients'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import qs from 'qs'
 import React from 'react'
 import { useSet } from 'react-use'
@@ -19,6 +19,7 @@ interface PriceProps {
 };	
 
 export const Filters: React.FC<Props> = ({ className }) => {
+  const searchParams = useSearchParams();
   const router = useRouter();
   const { ingredients, loading, onAddId, selectedIngredients } = useFilterIngredients();
   const [sizes, { toggle: toggleSizes }] = useSet(new Set<string>([]));
@@ -36,6 +37,7 @@ export const Filters: React.FC<Props> = ({ className }) => {
   });
 };
 
+console.log(searchParams, 999);
 
 React.useEffect(() => {
   const fiters = {
@@ -46,7 +48,7 @@ React.useEffect(() => {
 }
 
   const query = qs.stringify(fiters, {arrayFormat: 'comma',});
-  router.push(`?${query}`);
+  router.push(`?${query}`,{scroll: false},);
 
 }, [prices, pizzaTypes, sizes, ingredients, selectedIngredients])
 
