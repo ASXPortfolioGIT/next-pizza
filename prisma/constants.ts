@@ -102,77 +102,137 @@ export const ingredients = [
 export const products = [
 	// Пиццы (categoryId: 1)
 	{
-		name: 'Коктеиль молочный',
-		imageUrl: 'https://media.dodostatic.net/image/r:233x233/11EE7D61304FAF5A98A6958F2BB2D260.webp',
-		categoryId: 1,
-		price: 599,
-	},
-	{
-		name: 'Сосиска в тесте',
-		imageUrl: 'https://media.dodostatic.net/image/r:233x233/11EE7D610CF7E265B7C72BE5AE757CA7.webp',
-		categoryId: 1,
-		price: 549,
-	},
-		{
-		name: 'Кофе латте',
-		imageUrl: 'https://media.dodostatic.net/image/r:584x584/11ee7d61b0c26a3f85d97a78feee00ad.avif',
-		categoryId: 3,
-		price: 149,
-	},
-	{
-		name: 'Чоризо фреш',
-		imageUrl: 'https://media.dodostatic.net/image/r:584x584/11EE7D61706D472F9A5D71EB94149304.webp',
+		name: 'Охотничья',
+		imageUrl: 'https://media.dodostatic.net/image/r:584x584/019635b27c727302835040e5d7c27caa.avif',
 		categoryId: 1,
 		price: 629,
 	},
-
-	// Напитки (categoryId: 2)
 	{
-		name: 'Добрый кола 0.5л',
-		imageUrl: 'https://media.dodostatic.net/image/r:584x584/0194b770052874e5866fb322a5ccd52e.avif',
-		categoryId: 2,
-		price: 149,
+		name: 'Криветка и песто',
+		imageUrl: 'https://media.dodostatic.net/image/r:584x584/019591b642d87304a62d322945990861.avif',
+		categoryId: 1,
+		price: 659,
+	},
+		{
+		name: 'Чил грилл',
+		imageUrl: 'https://media.dodostatic.net/image/r:584x584/019591c69fac7921a27e4ecd8c99f9df.avif',
+		categoryId: 1,
+		price: 519,
 	},
 	{
-		name: 'Добрый апельсин 0.5л',
-		imageUrl: 'https://media.dodostatic.net/image/r:584x584/0194b76f2778790e920584c191edd032.avif',
+		name: 'Двойной ципленок',
+		imageUrl: 'https://media.dodostatic.net/image/r:584x584/11ee7d614cbe0530b7234b6d7a6e5f8e.avif',
+		categoryId: 1,
+		price: 449,
+	},
+	{
+		name: 'Сырная',
+		imageUrl: 'https://media.dodostatic.net/image/r:584x584/11ee7d610d2925109ab2e1c92cc5383c.avif',
+		categoryId: 1,
+		price: 349,
+	},
+	{
+		name: 'Пеперони фреш',
+		imageUrl: 'https://media.dodostatic.net/image/r:584x584/11ee7d612fc7b7fca5be822752bee1e5.avif',
+		categoryId: 1,
+		price: 349,
+	},
+	{
+		name: 'Черизо фреш',
+		imageUrl: 'https://media.dodostatic.net/image/r:584x584/11ee7d61706d472f9a5d71eb94149304.avif',
+		categoryId: 1,
+		price: 349,
+	},
+	{
+		name: 'Ветчина и грибы',
+		imageUrl: 'https://media.dodostatic.net/image/r:584x584/11ef5b10b39bbbbda9f8c4e4ff1b067c.avif',
+		categoryId: 1,
+		price: 499,
+	},
+	{
+		name: 'Баварская',
+		imageUrl: 'https://media.dodostatic.net/image/r:584x584/019591a2e222794a81731c99f3cc34ec.avif',
+		categoryId: 1,
+		price: 569,
+	},
+
+	// Завтрак (categoryId: 2)
+	{
+		name: 'Хашбрауны',
+		imageUrl: 'https://media.dodostatic.net/image/r:584x584/019591f326f27455a9841fb14785fc27.avif',
 		categoryId: 2,
-		price: 149,
+		price: 119,
+	},
+	{
+		name: 'Омлет с томатами в пите',
+		imageUrl: 'https://media.dodostatic.net/image/r:584x584/019635f4c8b873ed867cf7919f6185c7.avif',
+		categoryId: 2,
+		price: 165,
+	},
+	{
+		name: 'Омлет с беконом в пите',
+		imageUrl: 'https://media.dodostatic.net/image/r:584x584/019635ec59c471aeb41873a7ebd7f6e1.avif',
+		categoryId: 2,
+		price: 205,
 	},
 
 	// Закуски (categoryId: 3)
 	{
-		name: 'Картофель из печи',
-		imageUrl: 'https://media.dodostatic.net/image/r:233x233/11EE7D61C1A5B7A2B9F9F2F6C4D1F4FC.webp',
+		name: 'Ланчбокс охотничий',
+		imageUrl: 'https://media.dodostatic.net/image/r:584x584/019635cebea7796aba0b56df07f787ac.avif',
 		categoryId: 3,
-		price: 249,
+		price: 389,
 	},
 	{
-		name: 'Куриные крылья',
-		imageUrl: 'https://media.dodostatic.net/image/r:233x233/11EE7D61C1A5B7A2B9F9F2F6C4D1F4FD.webp',
+		name: 'Хашбрауны',
+		imageUrl: 'https://media.dodostatic.net/image/r:584x584/019591f326f27455a9841fb14785fc27.avif',
 		categoryId: 3,
-		price: 349,
+		price: 119,
 	},
-
-	// Десерты (categoryId: 4)
 	{
-		name: 'Чизкейк',
-		imageUrl: 'https://media.dodostatic.net/image/r:233x233/11EE7D61C1A5B7A2B9F9F2F6C4D1F4FE.webp',
-		categoryId: 4,
+		name: 'Чикен ролл',
+		imageUrl: 'https://media.dodostatic.net/image/r:584x584/019595f503e27410ab6e179c05347231.avif',
+		categoryId: 3,
 		price: 199,
 	},
+
+	// Коктейли (categoryId: 4)
 	{
-		name: 'Тирамису',
-		imageUrl: 'https://media.dodostatic.net/image/r:233x233/11EE7D61C1A5B7A2B9F9F2F6C4D1F4FF.webp',
+		name: 'Персиковый молочный коктейль',
+		imageUrl: 'https://media.dodostatic.net/image/r:1875x1875/019592025b2376d5af7b6ace8be8b9aa.avif',
 		categoryId: 4,
-		price: 229,
+		price: 235,
+	},
+	{
+		name: 'Молочный коктейль Фисташка',
+		imageUrl: 'https://media.dodostatic.net/image/r:1875x1875/019595f0eec0752da61aed5ee21ebf0b.avif',
+		categoryId: 4,
+		price: 235,
+	},
+	{
+		name: 'Молочный коктейль с печеньем Орео',
+		imageUrl: 'https://media.dodostatic.net/image/r:1875x1875/019595f0eec0752da61aed5ee21ebf0b.avif',
+		categoryId: 4,
+		price: 235,
 	},
 
-	// Завтраки (categoryId: 5)
+	// Напитки (categoryId: 5)
 	{
-		name: 'Омлет с беконом',
-		imageUrl: 'https://media.dodostatic.net/image/r:233x233/11EE7D61C1A5B7A2B9F9F2F6C4D1F500.webp',
+		name: 'Добрый Кола Ледяной Лимон',
+		imageUrl: 'https://media.dodostatic.net/image/r:1875x1875/0196147311da7434b3bdb08f1f70713b.avif',
 		categoryId: 5,
-		price: 299,
+		price: 135,
+	},
+	{
+		name: 'Лимонад Арбузный лайм',
+		imageUrl: 'https://media.dodostatic.net/image/r:1875x1875/0195923341fe74359961dae3c255e3c1.avif',
+		categoryId: 5,
+		price: 149,
+	},
+	{
+		name: 'Добрый Кола',
+		imageUrl: 'https://media.dodostatic.net/image/r:1875x1875/0194b770052874e5866fb322a5ccd52e.avif',
+		categoryId: 5,
+		price: 135,
 	}
 ];
