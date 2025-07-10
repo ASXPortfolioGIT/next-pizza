@@ -11,7 +11,7 @@ interface State {
 export const useCategoryStore = create<State>()((set) => ({
     activeId: 1,
     setActiveId: (activeId: number) => {
-        console.log('setActiveId called with:', activeId);
+        // console.log('setActiveId called with:', activeId);
         set({ activeId });
     },
 }));

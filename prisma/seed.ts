@@ -62,7 +62,7 @@ async function up() {
     data: {
       name: 'Пепперони',
       price: 700,
-      imageUrl: 'https://cdn.dodostatic.net/static/Img/Products/000D3A22FA54A81411E9AFA6B0F2C1B4',
+      imageUrl: 'https://media.dodostatic.net/image/r:584x584/11ee7d612fc7b7fca5be822752bee1e5.avif',
       categoryId: 1,
       ingredients: {
         connect: ingredients.slice(0, 5),
@@ -74,7 +74,7 @@ async function up() {
     data: {
       name: 'Маргарита',
       price: 600,
-      imageUrl: 'https://cdn.dodostatic.net/static/Img/Products/000D3A22FA54A81411E9AFA6B0F2C1B4',
+      imageUrl: 'https://media.dodostatic.net/image/r:584x584/11ee7d6105ef6690b86fbde6150b5b0c.avif',
       categoryId: 1,
       ingredients: {
         connect: ingredients.slice(5, 10),
@@ -86,7 +86,7 @@ async function up() {
     data: {
       name: 'Гавайская',
       price: 800,
-      imageUrl: 'https://cdn.dodostatic.net/static/Img/Products/000D3A22FA54A81411E9AFA6B0F2C1B4',
+      imageUrl: 'https://media.dodostatic.net/image/r:584x584/11ee7d6149eb101d8727573088fa2eff.avif',
       categoryId: 1,
       ingredients: {
         connect: ingredients.slice(10, 15),
