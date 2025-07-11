@@ -1,13 +1,6 @@
 import { Header } from "@/components/shared/header";
 import type { Metadata } from "next";
-import { Nunito } from "next/font/google";
-import "../globals.css";
-
-const nunito = Nunito({
-  subsets: ["cyrillic"],
-  variable: "--font-nunito",
-  weight: ["400", "500", "600", "700", "800", "900"],
-});
+// import "../globals.css"; можно сделать отдельный если нужен и будет свой стиль
 
 export const metadata: Metadata = {
   // название и описание для сео
@@ -21,14 +14,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={nunito.variable}>
-        <main className="min-h-screen">
-          {/* на всех страницах рендеринг хедер */}
-          <Header />
-          {children}
-        </main>
-      </body>
-    </html>
+    <main className="min-h-screen">
+      <Header />
+      {children}
+    </main>
   );
 }
